@@ -1,0 +1,156 @@
+<!CALCULATOR>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .calculator {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .display {
+            width: 100%;
+            height: 50px;
+            background-color: #222;
+            color: white;
+            text-align: right;
+            padding: 10px;
+            font-size: 1.5em;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .button {
+            background-color: #4facfe;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 15px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .button:hover {
+            background-color: #00f2fe;
+        }
+
+        .button.operator {
+            background-color: #ff4d4d;
+        }
+
+        .button.operator:hover {
+            background-color: #ff1a1a;
+        }
+
+        .button.equal {
+            background-color: #33cc33;
+            grid-column: span 2;
+        }
+
+        .button.equal:hover {
+            background-color: #29a329;
+        }
+
+        .button.clear {
+            background-color: #ff9900;
+        }
+
+        .button.clear:hover {
+            background-color: #e68a00;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="button clear" onclick="clearDisplay()">C</button>
+            <button class="button operator" onclick="appendOperator('/')">/</button>
+            <button class="button operator" onclick="appendOperator('*')">*</button>
+            <button class="button operator" onclick="appendOperator('-')">-</button>
+
+            <button class="button" onclick="appendNumber(7)">7</button>
+            <button class="button" onclick="appendNumber(8)">8</button>
+            <button class="button" onclick="appendNumber(9)">9</button>
+            <button class="button operator" onclick="appendOperator('+')">+</button>
+
+            <button class="button" onclick="appendNumber(4)">4</button>
+            <button class="button" onclick="appendNumber(5)">5</button>
+            <button class="button" onclick="appendNumber(6)">6</button>
+            <button class="button" onclick="appendNumber(1)">1</button>
+            
+            <button class="button" onclick="appendNumber(2)">2</button>
+            <button class="button" onclick="appendNumber(3)">3</button>
+            <button class="button equal" onclick="calculateResult()">=</button>
+            
+            <button class="button" onclick="appendNumber(0)">0</button>
+            <button class="button" onclick="appendOperator('.')">.</button>
+        </div>
+    </div>
+
+    <script>
+        let display = document.getElementById('display');
+        let currentInput = '';
+        let operatorUsed = false;
+
+        function appendNumber(number) {
+            if (operatorUsed && !isNaN(display.innerText)) {
+                currentInput = number.toString();
+                operatorUsed = false;
+            } else {
+                currentInput += number.toString();
+            }
+            updateDisplay();
+        }
+        function appendOperator(operator) {
+            if (currentInput === '' && operator === '-') {
+                currentInput = operator;
+            } else if (!isNaN(currentInput.slice(-1))) {
+                currentInput += operator;
+                operatorUsed = true;
+            }
+            updateDisplay();
+        }
+        function clearDisplay() {
+            currentInput = '';
+            updateDisplay();
+        }
+        function calculateResult() {
+            try {
+                currentInput = eval(currentInput).toString();
+            } catch (error) {
+                currentInput = 'Error'; 
+            }
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            display.innerText = currentInput || '0';
+        }
+    </script>
+</body>
+</html>
